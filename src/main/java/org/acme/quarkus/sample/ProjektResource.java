@@ -34,14 +34,14 @@ public class ProjektResource {
         personResource.getLoginPerson();
         try {
             Statement statement = con.createStatement();
-            String query = "SELECT Projekt.Projektname FROM Projekt " +
+            String query = "SELECT Projektname, Projekt_ID FROM Projekt " +
                     "INNER JOIN Aufgabe ON Projekt.Projekt_ID = Aufgabe.FK_Projekt " +
                     "INNER JOIN PERSON ON Aufgabe.FK_Person = Person.Person_ID " +
                     "where Person.Person_ID = " + (personResource.getPerson().getPersonID()-1) +
                     " Group by Projekt.Projekt_ID";
             ResultSet rs =  statement.executeQuery(query);
             while (rs.next()){
-                Projekt projekt = new Projekt(rs.getString(1));
+                Projekt projekt = new Projekt(rs.getString(1), rs.getInt(2));
                 projekts.add(projekt);
             }
             rs.close();

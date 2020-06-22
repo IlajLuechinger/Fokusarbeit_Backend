@@ -1,10 +1,7 @@
 package org.acme.quarkus.sample;
 //import io.quarkus.launcher.shaded.org.apache.commons.codec.binary.Hex;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -36,8 +33,7 @@ public class PersonResource {
         ResultSet rs =  statement.executeQuery(query);
         while (rs.next()){
             person = new Person(rs.getInt(1) ,rs.getInt(2));
-            System.out.println(person.getPersonID() + " " + person.getRolleID());
-            persons.add(person);
+        persons.add(person);
         }
         rs.close();
     } catch (
@@ -64,6 +60,7 @@ public class PersonResource {
     public Set<Person> list(){
         return getLoginPerson();
     }
+
 
     public Person getPerson(){
         return person;
