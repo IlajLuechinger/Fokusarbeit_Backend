@@ -19,6 +19,7 @@ import java.util.Set;
 public class TaskResource {
 
     private DBCon db = new DBCon();
+    private static Person person;
     private Set<Task> tasks = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
     public TaskResource(){
@@ -54,6 +55,10 @@ public class TaskResource {
             e.printStackTrace();
         }
         return tasks;
+    }
+
+    public static void setPerson(Person person1){
+        person = person1;
     }
 
     @GET

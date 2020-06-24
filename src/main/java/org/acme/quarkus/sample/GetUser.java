@@ -39,13 +39,13 @@ public class GetUser {
             ResultSet rs =  statement.executeQuery(query);
             if (rs.next()){
                 person = new Person(rs.getInt(1), rs.getInt(2));
-                people.add(person);
-                System.out.println(person.getPersonID());
-                ProjektResource.setPerson(person);
             } else {
                 person = new Person(0,0);
-                people.add(person);
             }
+            people.add(person);
+            ProjektResource.setPerson(person);
+            TaskResource.setPerson(person);
+
             rs.close();
         } catch (
                 SQLException e) {
