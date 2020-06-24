@@ -6,8 +6,8 @@ public class Person {
     private int RolleID;
 
     public Person(int PersonID, int RolleID){
-            this.PersonID = PersonID;
-            this.RolleID = RolleID;
+        this.PersonID = PersonID;
+        this.RolleID = RolleID;
         }
 
 

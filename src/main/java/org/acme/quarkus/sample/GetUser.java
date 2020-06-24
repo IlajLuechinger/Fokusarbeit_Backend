@@ -1,7 +1,6 @@
 package org.acme.quarkus.sample;
 import io.quarkus.launcher.shaded.org.apache.commons.codec.binary.Hex;
 
-import javax.annotation.processing.Generated;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.nio.charset.StandardCharsets;
@@ -30,6 +29,7 @@ public class GetUser {
         String pw = login.getPassword();
         String hashedPW = hashPW(pw);
         String mail = login.getEmail();
+        System.out.println(pw + " "  + mail);
         Connection con = db.getDBCon();
         try {
             Statement statement = con.createStatement();
@@ -40,6 +40,8 @@ public class GetUser {
             if (rs.next()){
                 person = new Person(rs.getInt(1), rs.getInt(2));
                 people.add(person);
+                System.out.println(person.getPersonID());
+                ProjektResource.setPerson(person);
             } else {
                 person = new Person(0,0);
                 people.add(person);

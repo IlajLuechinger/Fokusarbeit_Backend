@@ -4,31 +4,33 @@ import java.sql.Date;
 
 public class Task {
 
-    private int id;
+    private int aufgabeID;
     private String titel;
     private String beschreibung;
     private String userStory;
     private double sollZeit;
     private double istZeit;
-    private Date sollDate;
+    private Date sollDatum;
     private String status;
     private int personID;
+    private int projektID;
 
-    public Task(int id, String titel, String beschreibung, String userStory,
-                double sollZeit, double istZeit, Date sollDate ,String status, int personID){
-        this.id = id;
+    public Task(int aufgabeID, String titel, String beschreibung, String userStory,
+                double sollZeit, double istZeit, Date sollDatum ,String status, int personID, int projektID){
+        this.aufgabeID = aufgabeID;
         this.titel = titel;
         this.beschreibung = beschreibung;
         this.userStory = userStory;
         this.sollZeit = sollZeit;
         this.istZeit = istZeit;
-        this.sollDate = sollDate;
+        this.sollDatum = sollDatum;
         this.status = status;
         this.personID = personID;
+        this.projektID = projektID;
     }
 
-    public int getId() {
-        return id;
+    public int getAufgabeID() {
+        return aufgabeID;
     }
 
     public String getBeschreibung() {
@@ -51,8 +53,8 @@ public class Task {
         return istZeit;
     }
 
-    public Date getSollDate() {
-        return sollDate;
+    public Date getSollDatum() {
+        return sollDatum;
     }
 
     public int getPersonID() {
@@ -61,5 +63,9 @@ public class Task {
 
     public String getStatus() {
         return status;
+    }
+
+    public int getProjektID() {
+        return projektID;
     }
 }

@@ -20,7 +20,6 @@ public class TaskResource {
 
     private DBCon db = new DBCon();
     private Set<Task> tasks = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
-    private PersonResource personResource = new PersonResource();
 
     public TaskResource(){
         getTasks();
@@ -28,18 +27,17 @@ public class TaskResource {
 
     public Set<Task> getTasks(){
         Connection con = db.getDBCon();
-        personResource.getLoginPerson();
         String query = "Select Aufgabe.Aufgabe_ID, Aufgabe.Titel, Aufgabe.Beschreibung, Aufgabe.Userstory, " +
-                "Aufgabe.SollZeit, Aufgabe.IstZeit, Aufgabe.SollDatum, Status.Bezeichnung, Person.Person_ID from Aufgabe " +
+                "Aufgabe.SollZeit, Aufgabe.IstZeit, Aufgabe.SollDatum, Status.Bezeichnung, Person.Person_ID, Aufgabe.FK_Projekt from Aufgabe " +
                 "Inner join Status on Aufgabe.FK_Status = Status.Status_ID " +
                 "Inner join Person on Aufgabe.FK_Person = Person.Person_ID " +
                 "where Aufgabe.FK_Projekt = 1 " +
-                "AND Person.Person_ID = " + (personResource.getPerson().getPersonID());
+                "AND Person.Person_ID = 1";
         try {
             Statement statement = con.createStatement();
-            if(personResource.getPerson().getRolleID()+1 == 1){
+            if(true){
                 query = "Select Aufgabe.Aufgabe_ID, Aufgabe.Titel, Aufgabe.Beschreibung, Aufgabe.Userstory, " +
-                        "Aufgabe.SollZeit, Aufgabe.IstZeit, Aufgabe.SollDatum ,Status.Bezeichnung, Person.Person_ID from Aufgabe " +
+                        "Aufgabe.SollZeit, Aufgabe.IstZeit, Aufgabe.SollDatum ,Status.Bezeichnung, Person.Person_ID, Aufgabe.FK_Projekt from Aufgabe " +
                         "Inner join Status on Aufgabe.FK_Status = Status.Status_ID " +
                         "Inner join Person on Aufgabe.FK_Person = Person.Person_ID " +
                         "where Aufgabe.FK_Projekt = 1;";
@@ -48,8 +46,7 @@ public class TaskResource {
             while (rs.next()){
                 Task task = new Task(rs.getInt(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), rs.getDouble(5), rs.getDouble(6), rs.getDate(7),
-                        rs.getString(8), rs.getInt(9));
-                //System.out.println(task.getTitel() + " " + task.getStatus());
+                        rs.getString(8), rs.getInt(9), rs.getInt(10));
                 tasks.add(task);
             }
             rs.close();
