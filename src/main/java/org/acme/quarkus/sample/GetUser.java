@@ -22,36 +22,39 @@ public class GetUser {
     private DBCon db = new DBCon();
     private Set<Login> logins = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
     private Set<Person> people = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
+    private Set<Boolean> validUsers = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
     private Person person;
-    private Login login;
+    boolean valid = false;
 
-    public Set<Person> getUserIfExist(Login login){
+    public Set<Boolean> getUserIfExist(Login login){
         String pw = login.getPassword();
         String hashedPW = hashPW(pw);
         String mail = login.getEmail();
-        System.out.println(pw + " "  + mail);
         Connection con = db.getDBCon();
         try {
             Statement statement = con.createStatement();
             String query = "Select Person_ID, FK_Rolle from Person " +
-            "where Email =" + " '"+ mail + "' " +
-            "and password =" + "'" + hashedPW + "'";
+                    "where Email =" + " '"+ mail + "' " +
+                    "and password =" + "'" + hashedPW + "'";
             ResultSet rs =  statement.executeQuery(query);
             if (rs.next()){
                 person = new Person(rs.getInt(1), rs.getInt(2));
+                valid = true;
+                System.out.println("valid = true");
             } else {
                 person = new Person(0,0);
+                valid = false;
             }
             people.add(person);
+            validUsers.add(valid);
             ProjektResource.setPerson(person);
             TaskResource.setPerson(person);
-
             rs.close();
         } catch (
                 SQLException e) {
             e.printStackTrace();
         }
-        return people;
+        return validUsers;
     }
 
 
@@ -62,7 +65,6 @@ public class GetUser {
 
     @POST
     public Set<Login> add(Login login){
-        this.login = login;
         logins.add(login);
         getUserIfExist(login);
         return logins;
@@ -70,8 +72,8 @@ public class GetUser {
 
     @GET
     @Path("/user")
-    public Set<Person> listPerson(){
-        return people;
+    public Set<Boolean> listPerson(){
+        return validUsers;
     }
 
     public String hashPW(String pw){
@@ -85,13 +87,5 @@ public class GetUser {
             e.printStackTrace();
         }
         return hexString;
-    }
-
-    public Person getLoginPerson(){
-        return person;
-    }
-
-    public Login getLogin() {
-        return login;
     }
 }

@@ -1,9 +1,6 @@
 package org.acme.quarkus.sample;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -22,6 +19,8 @@ public class ProjektResource {
     private static Person person;
     private DBCon db = new DBCon();
     private Set<Projekt> projekts = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
+    private Set<Integer> projectID = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
+    private Set<ProjektName> projectNames = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
 
 
@@ -50,6 +49,24 @@ public class ProjektResource {
         return projekts;
     }
 
+    public Set<ProjektName> getProjectName(int id){
+        Connection con = db.getDBCon();
+        try {
+            Statement statement = con.createStatement();
+            String query = "Select Projekt_ID, Projektname  from Projekt " +
+                    "where Projekt_ID = "  + id;
+            ResultSet rs =  statement.executeQuery(query);
+            while (rs.next()){
+                ProjektName projectName = new ProjektName( rs.getInt(1) ,rs.getString(2)) ;
+                projectNames.add(projectName);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return projectNames;
+    }
+
     public static void setPerson(Person person1){
         person = person1;
     }
@@ -61,4 +78,22 @@ public class ProjektResource {
         return projekts;
     }
 
+    @GET
+    @Path("/id")
+    public Set<Integer> listNumber(){ return projectID;}
+
+    @POST
+    @Path("/id")
+    public Set<Integer> addID (int id){
+        projectID.add(id);
+        TaskResource.setProjectID(id);
+        getProjectName(id);
+        return projectID;
+    }
+
+    @GET
+    @Path("/projectName")
+    public Set<ProjektName> listProjectName(){
+        return projectNames;
+    }
 }
