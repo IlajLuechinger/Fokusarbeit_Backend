@@ -40,12 +40,12 @@ public class GetUser {
             if (rs.next()){
                 person = new Person(rs.getInt(1), rs.getInt(2));
                 valid = true;
-                System.out.println("valid = true");
             } else {
                 person = new Person(0,0);
                 valid = false;
             }
             people.add(person);
+            validUsers.clear();
             validUsers.add(valid);
             ProjektResource.setPerson(person);
             TaskResource.setPerson(person);

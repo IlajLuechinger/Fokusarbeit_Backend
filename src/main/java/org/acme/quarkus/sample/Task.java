@@ -5,6 +5,7 @@ import java.sql.Date;
 public class Task {
 
     private int aufgabeID;
+
     private String titel;
     private String beschreibung;
     private String userStory;
@@ -28,6 +29,7 @@ public class Task {
         this.personID = personID;
         this.projektID = projektID;
     }
+
 
     public int getAufgabeID() {
         return aufgabeID;

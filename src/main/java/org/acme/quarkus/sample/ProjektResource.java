@@ -24,6 +24,7 @@ public class ProjektResource {
 
 
 
+
     public ProjektResource(){
         getProjekts();
     }
@@ -57,6 +58,7 @@ public class ProjektResource {
                     "where Projekt_ID = "  + id;
             ResultSet rs =  statement.executeQuery(query);
             while (rs.next()){
+                projectNames.clear();
                 ProjektName projectName = new ProjektName( rs.getInt(1) ,rs.getString(2)) ;
                 projectNames.add(projectName);
             }
@@ -96,4 +98,7 @@ public class ProjektResource {
     public Set<ProjektName> listProjectName(){
         return projectNames;
     }
+
+
+
 }
