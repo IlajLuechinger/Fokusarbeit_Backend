@@ -8,7 +8,7 @@ public class UpdateTask {
     public UpdateTask(){
 
     }
-
+    //Klasse mit den wichtigen Parameter um eine Aufgabe zu aktualisieren
     public UpdateTask(int status, int aufgabeID){
         this.aufgabeID = aufgabeID;
         this.status = status;

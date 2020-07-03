@@ -2,9 +2,7 @@ package org.acme.quarkus.sample;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.security.SecureRandom;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Set;
@@ -46,6 +44,8 @@ public class TaskResource {
         return istTime;
     }
 
+    //Holt die Aufgaben je nach Nutzer, wenn der Benutzer ein Projektmanager ist bzw RolleID = 1 ist werden alle Aufgaben des Projekt geladen
+    //Wenn die RolleID != 1 ist werden nur die Aufgaben der Person geladen.
     public Set<Task> getTasks(){
         Connection con = db.getDBCon();
         String query;
@@ -80,6 +80,7 @@ public class TaskResource {
         return tasks;
     }
 
+    //Holt nur die Aufgabe, welcher mit der ID überein stimmt
     public Set<Task> getSelectedTask(int id){
         Connection con = db.getDBCon();
         try {
@@ -104,6 +105,7 @@ public class TaskResource {
         return selectedTask;
     }
 
+    //Updatet die gearbeitete Zeit
     private void updateIstTime(double totalTimeWorked) {
         Connection con = db.getDBCon();
         try {
@@ -118,6 +120,7 @@ public class TaskResource {
         }
     }
 
+    //Updatet den Status der Aufgabe, falls sie auf dem Kanbanboard verschoben wurde
     private void updateTaskStatus(UpdateTask updateTask) {
         Connection con = db.getDBCon();
         try {
@@ -131,6 +134,7 @@ public class TaskResource {
             e.printStackTrace();
         }
     }
+
 
     @POST
     @Path("/updatedStatus")

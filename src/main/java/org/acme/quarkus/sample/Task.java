@@ -16,6 +16,8 @@ public class Task {
     private int personID;
     private int projektID;
 
+
+    //Task-Klasse um die Aufgaben zu speichern
     public Task(int aufgabeID, String titel, String beschreibung, String userStory,
                 double sollZeit, double istZeit, Date sollDatum ,String status, int personID, int projektID){
         this.aufgabeID = aufgabeID;

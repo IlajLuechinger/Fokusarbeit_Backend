@@ -8,6 +8,7 @@ public class Login {
 
     public Login(){}
 
+    //Klasse um die Login Daten zu empfangen
     public Login(String password, String email){
         this.password = password;
         this.email = email;

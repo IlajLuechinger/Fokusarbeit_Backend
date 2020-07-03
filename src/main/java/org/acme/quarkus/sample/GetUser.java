@@ -26,6 +26,7 @@ public class GetUser {
     private Person person;
     boolean valid = false;
 
+    //Gibt einen Boolean zurück ob der Benuzter existiert
     public Set<Boolean> getUserIfExist(Login login){
         String pw = login.getPassword();
         String hashedPW = hashPW(pw);
@@ -37,6 +38,7 @@ public class GetUser {
                     "where Email =" + " '"+ mail + "' " +
                     "and password =" + "'" + hashedPW + "'";
             ResultSet rs =  statement.executeQuery(query);
+            //Falls es einen Treffer gibt, existiert der Benutzer und es gibt true zurück
             if (rs.next()){
                 person = new Person(rs.getInt(1), rs.getInt(2));
                 valid = true;
@@ -58,11 +60,13 @@ public class GetUser {
     }
 
 
+    //Zeigt das Login auf localhost:8080/loginData an
     @GET
     public Set<Login> list(){
         return logins;
     }
 
+    //Holt die Daten von ocalhost:8080/loginData und sucht ob dieser Benutzer existiert.
     @POST
     public Set<Login> add(Login login){
         logins.add(login);
@@ -70,12 +74,15 @@ public class GetUser {
         return logins;
     }
 
+
+    //Sendet den Boolean ob der Benutzer existiert
     @GET
     @Path("/user")
     public Set<Boolean> listPerson(){
         return validUsers;
     }
 
+    //Hash das Passwort mit SHA-256
     public String hashPW(String pw){
         MessageDigest digest = null;
         String hexString = "";

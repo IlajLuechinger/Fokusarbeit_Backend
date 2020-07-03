@@ -10,12 +10,14 @@ import java.sql.SQLException;
 
         private static Connection con;
 
+        //Wenn keine Verbindung vorhanden ist wird eine erstellt
         public DBCon(){
             if (con == null){
                 con = getDBCon();
             }
         }
 
+        //Erstellt die Verbindung zur MySQL Datenbank
         public Connection getDBCon() {
             try {
                 Class driver_class = Class.forName("com.mysql.cj.jdbc.Driver");

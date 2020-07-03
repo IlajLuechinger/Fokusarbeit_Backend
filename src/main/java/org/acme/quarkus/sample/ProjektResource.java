@@ -20,15 +20,16 @@ public class ProjektResource {
     private DBCon db = new DBCon();
     private Set<Projekt> projekts = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
     private Set<Integer> projectID = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
-    private Set<ProjektName> projectNames = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
+    private Set<Projekt> projectNames = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
 
 
-
+    //Beim initalisieren werden direkt die Projekte geladen
     public ProjektResource(){
         getProjekts();
     }
 
+    //Ladet die Projekte
     public Set<Projekt> getProjekts(){
         Connection con = db.getDBCon();
         try {
@@ -50,7 +51,8 @@ public class ProjektResource {
         return projekts;
     }
 
-    public Set<ProjektName> getProjectName(int id){
+    //Ladet die Projektnamen basieren auf der ID, welche man vom Frontend bekommt
+    public Set<Projekt> getProjectName(int id){
         Connection con = db.getDBCon();
         try {
             Statement statement = con.createStatement();
@@ -58,8 +60,9 @@ public class ProjektResource {
                     "where Projekt_ID = "  + id;
             ResultSet rs =  statement.executeQuery(query);
             while (rs.next()){
+                //Lösch den vorherigen Projektnamen, da man immer nur einen benötigt
                 projectNames.clear();
-                ProjektName projectName = new ProjektName( rs.getInt(1) ,rs.getString(2)) ;
+                Projekt projectName = new Projekt(rs.getString(2), rs.getInt(1)) ;
                 projectNames.add(projectName);
             }
             rs.close();
@@ -69,21 +72,26 @@ public class ProjektResource {
         return projectNames;
     }
 
+    //Klassenvariabel einer Person benötigt um die richtige Projekte zu ladne
     public static void setPerson(Person person1){
         person = person1;
     }
 
 
 
+    //Zeigt die Projekte auf localhost:8080/projects an
     @GET
     public Set<Projekt> list() {
-        return projekts;
+        projekts.clear();
+        return getProjekts();
     }
 
+    //Zeigt die ProjektID auf localhost:8080/projects/id an
     @GET
     @Path("/id")
     public Set<Integer> listNumber(){ return projectID;}
 
+    //Entnimmt den Wert von localhost:8080/projects/id
     @POST
     @Path("/id")
     public Set<Integer> addID (int id){
@@ -93,9 +101,10 @@ public class ProjektResource {
         return projectID;
     }
 
+    //Sendet den ausgewählten Projektnamen auf ocalhost:8080/projects/projectName
     @GET
     @Path("/projectName")
-    public Set<ProjektName> listProjectName(){
+    public Set<Projekt> listProjectName(){
         return projectNames;
     }
 
